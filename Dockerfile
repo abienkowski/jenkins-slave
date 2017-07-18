@@ -14,10 +14,11 @@ ENV PATH $JAVA_HOME/bin:$PATH
 RUN apt-get update -qq && apt-get install -qqy wget curl git iptables ca-certificates apparmor
 
 ENV JENKINS_SWARM_VERSION 1.26
+ENV JENKINS_USER=jenkins-slave
 ENV HOME /home/jenkins-slave
 
 
-RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
+RUN useradd -c "Jenkins Slave user" -d $HOME -m $JENKINS_USER
 RUN curl --create-dirs -sSLo $HOME/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 ADD cmd.sh /cmd.sh
@@ -39,9 +40,11 @@ ADD https://github.com/docker/compose/releases/download/1.5.2/docker-compose-Lin
 RUN chmod +x /usr/local/bin/docker-compose
 
 VOLUME /var/lib/docker
+VOLUME $HOME/.m2
 
 #ENV JENKINS_USERNAME jenkins
 #ENV JENKINS_PASSWORD jenkins
 #ENV JENKINS_MASTER http://jenkins:8080
 
+USER $JENKINS_USER
 CMD /bin/bash /cmd.sh
