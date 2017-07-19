@@ -18,13 +18,13 @@ ENV JENKINS_USER=jenkins-slave
 ENV HOME /home/jenkins-slave
 
 
-RUN useradd -c "Jenkins Slave user" -d $HOME -m $JENKINS_USER
+RUN useradd -c "Jenkins Slave user" -d $HOME -m $JENKINS_USER && mkdir $HOME/.m2 && chown $JENKINS_USER: $HOME/.m2
 RUN curl --create-dirs -sSLo $HOME/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar http://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 ADD cmd.sh /cmd.sh
 
 # set our wrapper
-ENTRYPOINT ["/usr/local/bin/docker-wrapper"]
+#ENTRYPOINT ["/usr/local/bin/docker-wrapper"]
 
 # setup our local files first
 #ADD docker-wrapper.sh /usr/local/bin/docker-wrapper
@@ -47,5 +47,5 @@ VOLUME $HOME/.m2
 #ENV JENKINS_PASSWORD jenkins
 #ENV JENKINS_MASTER http://jenkins:8080
 
-#USER $JENKINS_USER
+USER $JENKINS_USER
 CMD /bin/bash /cmd.sh
