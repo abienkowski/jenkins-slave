@@ -27,7 +27,7 @@ ADD cmd.sh /cmd.sh
 ENTRYPOINT ["/usr/local/bin/docker-wrapper"]
 
 # setup our local files first
-ADD docker-wrapper.sh /usr/local/bin/docker-wrapper
+#ADD docker-wrapper.sh /usr/local/bin/docker-wrapper
 
 # now we install docker in docker - thanks to https://github.com/jpetazzo/dind
 # We install newest docker into our docker in docker container
@@ -37,8 +37,8 @@ ADD docker-wrapper.sh /usr/local/bin/docker-wrapper
 #RUN chmod +x /usr/local/bin/docker-wrapper
 
 # Install Docker Compose
-ADD https://github.com/docker/compose/releases/download/1.5.2/docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
-RUN chmod +x /usr/local/bin/docker-compose
+#ADD https://github.com/docker/compose/releases/download/1.5.2/docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
+#RUN chmod +x /usr/local/bin/docker-compose
 
 VOLUME /var/lib/docker
 VOLUME $HOME/.m2
@@ -47,5 +47,5 @@ VOLUME $HOME/.m2
 #ENV JENKINS_PASSWORD jenkins
 #ENV JENKINS_MASTER http://jenkins:8080
 
-USER $JENKINS_USER
+#USER $JENKINS_USER
 CMD /bin/bash /cmd.sh
